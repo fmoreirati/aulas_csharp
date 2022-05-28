@@ -1,26 +1,36 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using _05_WebAPP.MVC.Models;
+using _05_WebAPP.MVC.Interfaces;
 
 namespace _05_WebAPP.MVC.Controllers;
 
 public class UserController : Controller
 {
+    protected IUserService _userService;
+
     private readonly ILogger<UserController> _logger;
 
-    public UserController(ILogger<UserController> logger)
+    public UserController(
+        ILogger<UserController> logger,
+        IUserService userService
+    )
     {
         _logger = logger;
+        _userService = userService;
     }
 
-    public IActionResult UserEntrar()
+    [HttpPost]
+    public IActionResult Add([FromForm] User user)
     {
-        return View();
+        try
+        {
+            var result = _userService.Add(user);
+            return Ok(user);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.GetBaseException().Message);
+        }
     }
-
-    public IActionResult UserForm()
-    {
-        return View();
-    }
-
 }

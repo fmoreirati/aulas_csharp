@@ -1,4 +1,6 @@
 using _05_WebAPP.MVC.Data;
+using _05_WebAPP.MVC.Interfaces;
+using _05_WebAPP.MVC.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +17,9 @@ builder.Services.AddEntityFrameworkNpgsql()
         options.UseNpgsql(configuration.GetConnectionString("TreinamentosDB"));
     }
 );
+
+//Dependencias
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 
