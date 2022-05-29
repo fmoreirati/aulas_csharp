@@ -7,19 +7,20 @@ var builder = WebApplication.CreateBuilder(args);
 
 ConfigurationManager configuration = builder.Configuration;
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
-
-builder.Services.AddEntityFrameworkNpgsql()
-.AddDbContext<EntityContext>(
+//Banco de dados
+builder.Services.AddDbContext<EntityContext>(
     options =>
-    {
-        options.UseNpgsql(configuration.GetConnectionString("TreinamentosDB"));
-    }
+    options.UseNpgsql(
+        configuration.GetConnectionString("TreinamentosDB")
+        ?? throw new InvalidOperationException("Connection string not found.")
+    )
 );
 
 //Dependencias
 builder.Services.AddScoped<IUserService, UserService>();
+
+// Add services to the container.
+builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 

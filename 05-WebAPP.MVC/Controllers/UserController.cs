@@ -21,11 +21,11 @@ public class UserController : Controller
     }
 
     [HttpPost]
-    public IActionResult Add([FromForm] User user)
+    public async Task<IActionResult> Add([FromForm] User user)
     {
         try
         {
-            var result = _userService.Add(user);
+            var result = await _userService.AddAsync(user);
             return Ok(user);
         }
         catch (Exception ex)

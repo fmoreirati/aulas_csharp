@@ -4,7 +4,7 @@ namespace _05_WebAPP.MVC.Interfaces
 {
     public interface IUserService
     {
-        public bool Add(User users);
+        public Task<bool> AddAsync(User users);
 
         public Task<List<User>> ListAsync(int page, int dataPag);
 

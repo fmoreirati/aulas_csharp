@@ -14,17 +14,18 @@ namespace _05_WebAPP.MVC.Services
             _context = context;
         }
 
-        public bool Add(User newUser)
+        public async Task<bool> AddAsync(User newUser)
         {
             try
             {
                 _context.Users.Add(newUser);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             catch (Exception ex)
             {
-                return false;
+                Console.WriteLine(ex);
+                throw new Exception("Erro ao cadastrar o usuário.", ex);
             }
         }
 
