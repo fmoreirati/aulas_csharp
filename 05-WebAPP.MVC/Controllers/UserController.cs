@@ -1,26 +1,42 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using _05_WebAPP.MVC.Models;
+using _05_WebAPP.MVC.Interfaces;
 
 namespace _05_WebAPP.MVC.Controllers;
 
 public class UserController : Controller
 {
+    protected IUserService _userService;
+
     private readonly ILogger<UserController> _logger;
 
-    public UserController(ILogger<UserController> logger)
+    public UserController(
+        ILogger<UserController> logger,
+        IUserService userService
+    )
     {
         _logger = logger;
+        _userService = userService;
     }
 
-    public IActionResult UserEntrar()
+    [HttpPost]
+    public async Task<IActionResult> Add([FromForm] User user)
     {
-        return View();
-    }
+        try
+        {
+            if (!ModelState.IsValid)
+            {
+                var erros = ModelState.Values;
+                return View("UserForm");
+            }
 
-    public IActionResult UserForm()
-    {
-        return View();
+            var result = await _userService.AddAsync(user);
+            return Ok(user);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.GetBaseException().Message);
+        }
     }
-
 }

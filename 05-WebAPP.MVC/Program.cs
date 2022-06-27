@@ -1,20 +1,26 @@
 using _05_WebAPP.MVC.Data;
+using _05_WebAPP.MVC.Interfaces;
+using _05_WebAPP.MVC.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 ConfigurationManager configuration = builder.Configuration;
 
+//Banco de dados
+builder.Services.AddDbContext<EntityContext>(
+    options =>
+    options.UseNpgsql(
+        configuration.GetConnectionString("TreinamentosDB")
+        ?? throw new InvalidOperationException("Connection string not found.")
+    )
+);
+
+//Dependencias
+builder.Services.AddScoped<IUserService, UserService>();
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
-builder.Services.AddEntityFrameworkNpgsql()
-.AddDbContext<EntityContext>(
-    options =>
-    {
-        options.UseNpgsql(configuration.GetConnectionString("TreinamentosDB"));
-    }
-);
 
 var app = builder.Build();
 
