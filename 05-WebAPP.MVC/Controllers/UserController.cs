@@ -25,6 +25,12 @@ public class UserController : Controller
     {
         try
         {
+            if (!ModelState.IsValid)
+            {
+                var erros = ModelState.Values;
+                return View("UserForm");
+            }
+
             var result = await _userService.AddAsync(user);
             return Ok(user);
         }

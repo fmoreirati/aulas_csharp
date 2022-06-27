@@ -11,8 +11,8 @@ using _05_WebAPP.MVC.Data;
 namespace _05_WebAPP.MVC.Migrations
 {
     [DbContext(typeof(EntityContext))]
-    [Migration("20220528200112_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20220606004304_Incial")]
+    partial class Incial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
